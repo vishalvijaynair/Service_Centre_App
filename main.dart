@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
-import 'authentication_page.dart';
+import 'package:service_centre/login_page.dart';
+import 'package:service_centre/signup_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(CarServiceApp());
+
+void main()  async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+       apiKey: "AIzaSyB0stCkFLyNFJI20FmE0zaFzTP2KBPEY70",
+        appId: "1:354057994820:android:931f4b3af4c6011154b211",
+        messagingSenderId: "354057994820",
+        projectId: "fixflow-e3983",
+        storageBucket: "fixflow-e3983.appspot.com"),
+  );
+
+  runApp(CarServiceApp());
+}
+
+//void main() => runApp(CarServiceApp());
 
 class CarServiceApp extends StatelessWidget {
   // Simulate some initialization process
   Future<void> _initializeApp(BuildContext context) async {
     await Future.delayed(Duration(seconds: 3)); // Simulating a delay of 2 seconds
 
-    // After initialization is complete, navigate to AuthenticationPage
+    // After initialization is complete, navigate to loginpage
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => AuthenticationPage()),
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 
@@ -32,7 +49,7 @@ class CarServiceApp extends StatelessWidget {
               ), // Accent color directly under ThemeData
               fontFamily: 'Montserrat', // Your selected font
             ),
-            home: AuthenticationPage(),
+            home: LoginPage(),
           );
         } else {
           // Show a loading indicator while waiting for initialization to complete
