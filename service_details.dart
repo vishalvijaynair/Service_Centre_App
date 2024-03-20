@@ -17,6 +17,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   // Initialize a list to store selected services
   List<String> selectedServices = [];
+   // Validator function for checking at least one service is selected
 
   @override
   Widget build(BuildContext context) {
@@ -198,35 +199,45 @@ class _DetailsPageState extends State<DetailsPage> {
                             });
                           },
                         ),
-                      ],
+                      ], 
                     ),
                     SizedBox(height: 20.0),
 
                     // Submit Button
                     ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState?.validate() ?? false) {
-                          // Save the data to Firestore
-                       try {
-                          await FirebaseFirestore.instance.collection('Service_Centres').doc(_nameController.text).set({
-                            'Service Center Name': _nameController.text,
-                            'License Number': _usernameController.text,
-                            'Phone Number': _phoneNumberController.text,
-                            'location': _locationController.text,
-                            'Services_offered': selectedServices,
-                          });
-                            // Handle successful signup, e.g., navigate to home page
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoginPage()),
-                            );
-                          } catch (e) {
-                            print('Failed to save data: $e');
-                            // Handle error
-                          }
-                        }
-                      },
-                      child: Text('Submit'),
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Check if at least one service is selected
+                    if (selectedServices.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('At least one service should be selected')),
+                      );
+                    } else {
+                      // Save the data to Firestore
+                      try {
+                        await FirebaseFirestore.instance.collection('Service_Centres').doc(_nameController.text).set({
+                          'Service Center Name': _nameController.text,
+                          'License Number': _usernameController.text,
+                          'Phone Number': _phoneNumberController.text,
+                          'location': _locationController.text,
+                          'Services_offered': selectedServices,
+                        });
+                        // Handle successful signup, e.g., navigate to home page
+                        ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Registered successfully')),
+                      );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      } catch (e) {
+                        print('Failed to save data: $e');
+                        // Handle error
+                      }
+                    }
+                  }
+                },
+                child: Text('Submit'),
                     ),
                   ],
                 ),
@@ -237,4 +248,5 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
     );
   }
+
 }
