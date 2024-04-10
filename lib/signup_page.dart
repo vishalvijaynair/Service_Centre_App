@@ -29,28 +29,31 @@ class _SignupPageState extends State<SignupPage> {
     'Chassis': '',
     'Washing': '',
   };
+  // Function to request and handle location permissions
+  Future<void> getLocation() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+
+    if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+      // Permissions granted, proceed to get the location
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        _latitude = position.latitude;
+        _longitude = position.longitude;
+      });
+      print('Location: ${position.latitude}, ${position.longitude}');
+    } else {
+      // Permissions not granted, handle accordingly (show a message, ask again, etc.)
+      print('Location permission denied.');
+    }
+  }
   @override
   void initState() {
     super.initState();
-     _getLocation(); // Call _getLocation() method when the widget is initialized
+     getLocation(); // Call _getLocation() method when the widget is initialized
   }
- _getLocation() async {
-  try {
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
 
-    double latitude = position.latitude;
-    double longitude = position.longitude;
-
-    setState(() {
-      _latitude = latitude;
-      _longitude = longitude;
-    });
-  } catch (e) {
-    print('Error getting location: $e');
-  }
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +124,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: TextFormField(
                     controller: _locationController,
                     decoration: InputDecoration(
-                      labelText: 'Location',
+                      labelText: 'Location(Current Location)',
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.location_on),
                     ),
@@ -297,7 +300,7 @@ ElevatedButton(
           ),
         );
       } else {
-          await FirebaseFirestore.instance.collection('Service_Centres').doc(_nameController.text).set({
+          await FirebaseFirestore.instance.collection('Service_Centres').doc(_emailController.text).set({
             'Service Center Name': _nameController.text,
             'License Number': _usernameController.text,
             'Email': _emailController.text,
@@ -311,7 +314,6 @@ ElevatedButton(
                 },
           });
 
-          // ignore: unused_local_variable
           UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
             email: _emailController.text,
             password: _passwordController.text,
