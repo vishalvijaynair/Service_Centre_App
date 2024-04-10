@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'service_center_details_page.dart'; // Import the service center details page
 
 class HomePage extends StatelessWidget {
   @override
@@ -7,7 +8,20 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('User Requests'),
+        backgroundColor: Color.fromARGB(255, 173, 210, 227),  
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ServiceCenterDetailsPage()),
+              );
+            },
+          ),
+        ],
       ),
+      backgroundColor: Colors.white, // Set background color to white
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -69,7 +83,6 @@ class HomePage extends StatelessWidget {
                 final userData = doc.data() as Map<String, dynamic>;
                 
                 // Extract email from the document ID
-                final userEmail = doc.id;
 
                 // Access fields within each document
                 final name = userData['Name'] ?? ''; // Provide default value if null

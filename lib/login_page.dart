@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Show error message to user
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Incorrect Password. Please try again'),
+                      content: Text('Incorrect Password/User Please try again'),
                     ),
                   );
                 }
