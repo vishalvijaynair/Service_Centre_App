@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
+
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -18,17 +19,18 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _locationController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    double? _latitude;
+  double? _latitude;
   double? _longitude;
 
-    List<String> selectedServices = [];
-  Map<String, String> serviceAmounts = {
-    'Tyre': '',
-    'Oil': '',
-    'Engine': '',
-    'Chassis': '',
-    'Washing': '',
+  List<String> selectedServices = [];
+  Map<String, int> serviceAmounts = {
+    'Tyre': 0,
+    'Oil': 0,
+    'Engine': 0,
+    'Chassis': 0,
+    'Washing': 0,
   };
+
   // Function to request and handle location permissions
   Future<void> getLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
@@ -48,10 +50,11 @@ class _SignupPageState extends State<SignupPage> {
       print('Location permission denied.');
     }
   }
+
   @override
   void initState() {
     super.initState();
-     getLocation(); // Call _getLocation() method when the widget is initialized
+    getLocation(); // Call _getLocation() method when the widget is initialized
   }
 
   @override
@@ -60,7 +63,7 @@ class _SignupPageState extends State<SignupPage> {
       appBar: AppBar(
         title: Text('Sign Up'),
       ),
-      backgroundColor:Colors.white,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -80,8 +83,8 @@ class _SignupPageState extends State<SignupPage> {
                     decoration: InputDecoration(
                       labelText: 'Service Centre Name',
                       border: InputBorder.none,
-                       prefixIcon: Icon(Icons.house_rounded),
-                  ),
+                      prefixIcon: Icon(Icons.house_rounded),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Name is required';
@@ -91,29 +94,29 @@ class _SignupPageState extends State<SignupPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
-                 SizedBox(height: 16.0),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                decoration: BoxDecoration(
-                  color: Colors.purple.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                   child: TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                    labelText: 'License Number',
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.numbers_rounded),
+                SizedBox(height: 16.0),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.purple.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(18),
                   ),
-                  validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'License is required';
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: TextFormField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: 'License Number',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.numbers_rounded),
                     ),
-              ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'License is required';
+                      }
+                      return null;
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
                 SizedBox(height: 16.0),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -217,139 +220,138 @@ class _SignupPageState extends State<SignupPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
-                    SizedBox(height: 12.0),
-Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text(
-      'Services Offered',
-      style: TextStyle(fontWeight: FontWeight.bold),
-    ),
-    for (String service in serviceAmounts.keys)
-      Column(
-        children: [
-          CheckboxListTile(
-            title: Text(service),
-            value: selectedServices.contains(service),
-            onChanged: (value) {
-              setState(() {
+                SizedBox(height: 12.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Services Offered',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    for (String service in serviceAmounts.keys)
+                      Column(
+                        children: [
+                          CheckboxListTile(
+                            title: Text(service),
+                            value: selectedServices.contains(service),
+                            onChanged: (value) {
+                              setState(() {
                                 if (value != null && value) {
-                  selectedServices.add(service);
-                  // If the service was not previously in the map, initialize its amount
-                  if (!serviceAmounts.containsKey(service)) {
-                    serviceAmounts[service] = '';
-                  }
-                } else {
-                  selectedServices.remove(service);
-                  // Remove the service from the map when unchecked
-                }
-              });
-            },
-          ),
-          SizedBox(height: 8),
-          if (selectedServices.contains(service)) // Only show the TextFormField for selected services
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.purple.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: TextFormField(
-                initialValue: serviceAmounts[service], // Set initial value from the map
-                decoration: InputDecoration(
-                  labelText: '$service Service Amount',
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.attach_money),
+                                  selectedServices.add(service);
+                                  // If the service was not previously in the map, initialize its amount
+                                  if (!serviceAmounts.containsKey(service)) {
+                                    serviceAmounts[service] = 0;
+                                  }
+                                } else {
+                                  selectedServices.remove(service);
+                                  // Remove the service from the map when unchecked
+                                }
+                              });
+                            },
+                          ),
+                          SizedBox(height: 8),
+                          if (selectedServices.contains(service)) // Only show the TextFormField for selected services
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              decoration: BoxDecoration(
+                                color: Colors.purple.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: TextFormField(
+                                initialValue: serviceAmounts[service].toString(), // Set initial value from the map
+                                decoration: InputDecoration(
+                                  labelText: '$service Service Amount',
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(Icons.attach_money),
+                                ),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Amount is required for $service';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    serviceAmounts[service] = int.tryParse(value) ?? 0;
+                                  });
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    SizedBox(height: 8),
+                    if (selectedServices.isEmpty) // Show the Snackbar if no service is selected
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text(
+                          'Select at least one service',
+                          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                        ),
+                      ),
+                  ],
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Amount is required for $service';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    serviceAmounts[service] = value;
-                  });
-                },
-              ),
+                SizedBox(height: 32.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      // Check if at least one service is selected
+                      if (selectedServices.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Select at least one service'),
+                          ),
+                        );
+                      } else {
+                        await FirebaseFirestore.instance.collection('Service_Centres').doc(_emailController.text).set({
+                          'Service Center Name': _nameController.text,
+                          'License Number': _usernameController.text,
+                          'Email': _emailController.text,
+                          'Phone Number': _phoneNumberController.text,
+                          'Location': _locationController.text,
+                          'Services_offered': selectedServices,
+                          'Service_Amounts': serviceAmounts,
+                          'locValue': {
+                            'latitude': _latitude,
+                            'longitude': _longitude,
+                          },
+                        });
+
+                        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Registered successfully')),
+                        );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    backgroundColor: Colors.purple,
+                  ),
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
-        ],
-      ),
-    SizedBox(height: 8),
-    if (selectedServices.isEmpty) // Show the Snackbar if no service is selected
-      Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: Text(
-          'Select at least one service',
-          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+          ),
         ),
       ),
-  ],
-),
-SizedBox(height: 32.0),
-ElevatedButton(
-  onPressed: () async {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Check if at least one service is selected
-      if (selectedServices.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Select at least one service'),
-          ),
-        );
-      } else {
-          await FirebaseFirestore.instance.collection('Service_Centres').doc(_emailController.text).set({
-            'Service Center Name': _nameController.text,
-            'License Number': _usernameController.text,
-            'Email': _emailController.text,
-            'Phone Number': _phoneNumberController.text,
-            'Location': _locationController.text,
-            'Services_offered': selectedServices,
-            'Service_Amounts': serviceAmounts,
-            'locValue': {
-                  'latitude': _latitude,
-                  'longitude': _longitude,
-                },
-          });
-
-          UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registered successfully')),
-          );
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginPage(),
-            ),
-          );
-        } 
-  }
-  },
-  style: ElevatedButton.styleFrom(
-    padding: EdgeInsets.symmetric(vertical: 16),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(25.0),
-    ),
-    backgroundColor: Colors.purple,
-  ),
-  child: Text(
-    'Sign Up',
-    style: TextStyle(color: Colors.white),
-  ),
-),
-],
-),
-),
-),
-    ),
     );
-}
-
+  }
 
   @override
   void dispose() {

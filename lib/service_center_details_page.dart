@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart'; // Import geolocator package
+import 'package:geolocator/geolocator.dart';
 import 'login_page.dart';
 
 class ServiceCenterDetailsPage extends StatelessWidget {
   const ServiceCenterDetailsPage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Centre Information'),
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),  
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit), // Edit icon
+            icon: Icon(Icons.edit),
             onPressed: () {
               Navigator.push(
                 context,
@@ -25,11 +25,11 @@ class ServiceCenterDetailsPage extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: Colors.white, // Set background color to white
+      backgroundColor: Colors.white,
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Service_Centres')
-            .doc(FirebaseAuth.instance.currentUser!.email) // Use service center name as document ID
+            .doc(FirebaseAuth.instance.currentUser!.email)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -42,48 +42,80 @@ class ServiceCenterDetailsPage extends StatelessWidget {
 
           var userData = snapshot.data!.data() as Map<String, dynamic>;
 
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.6,
+          return SingleChildScrollView( // Wrap with SingleChildScrollView
+            child: Center(
+              child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 55, 39, 176).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(18),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 55, 39, 176).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      UserInfoItem(label: 'Service Center Name', value: userData['Service Center Name'] ?? ''),
+                      UserInfoItem(label: 'Email', value: userData['Email'] ?? ''),
+                      UserInfoItem(label: 'Phone Number', value: userData['Phone Number'] ?? ''),
+                      UserInfoItem(label: 'Location', value: userData['Location'] ?? ''),
+                     SizedBox(height: 20),
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      'Services Offered',
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19.0),
+    ),
+    SizedBox(height: 8),
+    for (String service in (userData['Services_offered'] as List<dynamic>).cast<String>())
+      Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  service,
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    UserInfoItem(label: 'Service Center Name', value: userData['Service Center Name'] ?? ''),
-                    UserInfoItem(label: 'Email', value: userData['Email'] ?? ''),
-                    UserInfoItem(label: 'Phone Number', value: userData['Phone Number'] ?? ''),
-                    UserInfoItem(label: 'Location', value: userData['Location'] ?? ''),
-                    SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginPage()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                          backgroundColor: Colors.purple,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+              ),
+              Text(
+                'Amount: ${userData['Service_Amounts'][service]}',
+                style: TextStyle(fontSize: 17.0),
+              ),
+            ],
+          ),
+          SizedBox(height: 4), // Adjust the spacing between service and amount
+        ],
+      ),
+  ],
+),
+                      SizedBox(height: 20),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginPage()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                            backgroundColor: Colors.purple,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
+                          child: Text('Sign Out', style: TextStyle(fontSize: 17.0)),
                         ),
-                        child: Text('Sign Out', style: TextStyle(fontSize: 17.0)),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -136,8 +168,17 @@ class _EditUserInfoState extends State<EditUserInfo> {
   final _phoneNumberController = TextEditingController();
   final _locationController = TextEditingController();
   final _location1Controller = TextEditingController();
-  late double _latitude; // Define latitude variable
-  late double _longitude; // Define longitude variable
+  late double _latitude;
+  late double _longitude;
+
+  List<String> selectedServices = [];
+  Map<String, int> serviceAmounts = {
+    'Tyre': 0,
+    'Oil': 0,
+    'Engine': 0,
+    'Chassis': 0,
+    'Washing': 0,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +199,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
+             Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
                 ),
