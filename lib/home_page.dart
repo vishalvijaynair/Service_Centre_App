@@ -52,8 +52,8 @@ class HomePage extends StatelessWidget {
               Timestamp createdAt = orderData['createdAt'] as Timestamp;
               String userLocation = orderData['userLocation'];
               String userPhoneNumber = orderData['userPhoneNumber'];
-              List<dynamic> selectedServices = orderData['selectedServices'];
-              int totalAmount = orderData['totalAmount'];
+              List<String> selectedServices = List<String>.from(orderData['selectedServices']);
+              double totalAmount = orderData['totalAmount'];
 
                // Format ordered date and time
               DateTime orderedDateTime = createdAt.toDate();
@@ -152,22 +152,45 @@ class HomePage extends StatelessWidget {
         style: TextStyle(fontSize: 14),
       ),
       SizedBox(height: 10),
-      ElevatedButton(
-        onPressed: () {
-           Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrderDetailsPage(
-          userEmail: orders[index].id, // Passing userEmail as userId
-        ),
-                    ),
-                  );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 89, 40, 142),
-          foregroundColor: Colors.white,
-        ),
-        child: Text('Details'),
+          Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OrderDetailsPage(
+                                  userName: userName,
+                                  orderedDate: orderedDate,
+                                  orderedTime: orderedTime,
+                                  userLocation: userLocation,
+                                  userPhoneNumber: userPhoneNumber,
+                                  userEmail: orders[index].id,
+                                  selectedServices: selectedServices,
+                                  totalAmount: totalAmount,
+                                ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 89, 40, 142),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text('Details'),
+                        ),
+                        SizedBox(width: 5),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Handle "Work Done" button press
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 46, 159, 53),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text('Work Done'),
+                           ),
+                      ],
                     ),
                   ],
                 ),

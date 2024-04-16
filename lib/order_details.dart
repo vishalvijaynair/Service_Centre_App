@@ -5,9 +5,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:service_centre/home_page.dart';
 
 class OrderDetailsPage extends StatefulWidget {
+   final String userName;
+  final String orderedDate;
+  final String orderedTime;
+  final String userLocation;
+  final String userPhoneNumber;
   final String userEmail;
-    const OrderDetailsPage({Key? key, required this.userEmail}) : super(key: key);
-
+  final List<String> selectedServices;
+  final double totalAmount;
+  
+  const OrderDetailsPage({
+    Key? key,
+    required this.userName,
+    required this.orderedDate,
+    required this.orderedTime,
+    required this.userLocation,
+    required this.userPhoneNumber,
+    required this.userEmail,
+    required this.selectedServices,
+    required this.totalAmount,
+  }) : super(key: key);
 
   @override
   _OrderDetailsPageState createState() => _OrderDetailsPageState();
@@ -19,7 +36,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   late TimeOfDay _selectedTime;
   late TextEditingController _messageController;
   
-  String? get userEmail => userEmail;
+
 
   @override
   void initState() {
@@ -72,13 +89,21 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       String userId = user.uid;
 
-      // Formulate the data to be stored
-      Map<String, dynamic> orderData = {
-        'workerName': _workerNameController.text,
-        'date': DateFormat('yyyy-MM-dd').format(_selectedDate),
-        'time': _selectedTime.format(context),
-        'message': _messageController.text,
-      };
+   // Formulate the data to be stored
+    Map<String, dynamic> orderData = {
+      'userName': widget.userName,
+      'orderedDate': widget.orderedDate,
+      'orderedTime': widget.orderedTime,
+      'userLocation': widget.userLocation,
+      'userPhoneNumber': widget.userPhoneNumber,
+      'userEmail': widget.userEmail,
+      'selectedServices': widget.selectedServices,
+      'totalAmount': widget.totalAmount,
+      'workerName': _workerNameController.text,
+      'date': DateFormat('yyyy-MM-dd').format(_selectedDate),
+      'time': _selectedTime.format(context),
+      'message': _messageController.text,
+    };
 
       try {
         // Store data in Firestore
