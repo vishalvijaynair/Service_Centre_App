@@ -145,6 +145,17 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       appBar: AppBar(
         title: Text('Order Details'),
         backgroundColor: Color.fromARGB(255, 169, 170, 255),
+         actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Container(

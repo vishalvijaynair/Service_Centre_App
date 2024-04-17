@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:service_centre/order_details.dart';
 import 'package:service_centre/service_center_details_page.dart';
 import 'package:intl/intl.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -60,99 +61,98 @@ class HomePage extends StatelessWidget {
               String orderedDate = DateFormat.yMMMMd().format(orderedDateTime);
               String orderedTime = DateFormat.jm().format(orderedDateTime); // Formats time with AM/PM
 
-
-            return Container(
-  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-  padding: EdgeInsets.all(10),
-  decoration: BoxDecoration(
-    color: Colors.lightBlue[100],
-    borderRadius: BorderRadius.circular(10),
-  ),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(height: 5),
-      Text(
-        'User Name:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '$userName',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'Ordered Date:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '$orderedDate',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'Ordered Time:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '$orderedTime',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'User Location:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '$userLocation',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'User Phone Number:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '$userPhoneNumber',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'User Email:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '${orders[index].id}',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'Service:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '${selectedServices.join(', ')}',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'Total Amount:',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      SizedBox(height: 5),
-      Text(
-        '$totalAmount',
-        style: TextStyle(fontSize: 14),
-      ),
-      SizedBox(height: 10),
-          Row(
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 5),
+                    Text(
+                      'User Name:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '$userName',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Ordered Date:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '$orderedDate',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Ordered Time:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '$orderedTime',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'User Location:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '$userLocation',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'User Phone Number:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '$userPhoneNumber',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'User Email:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '${orders[index].id}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Service:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '${selectedServices.join(', ')}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Total Amount:',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      '$totalAmount',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
@@ -181,15 +181,50 @@ class HomePage extends StatelessWidget {
                         ),
                         SizedBox(width: 5),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // Handle "Work Done" button press
+                            String UserEmail = orders[index].id;
+                          // Replace with actual service center email
+                            FirebaseFirestore firestore = FirebaseFirestore.instance;
+                     
+                            // Store data in nested "orders" subcollection
+                            await firestore
+                                .collection('orders_completed')
+                                .doc(UserEmail) // Use user email as parent document ID
+                                .collection('orders')
+                                .doc((FirebaseAuth.instance.currentUser!.email)) // Use service center email as document ID
+                                .set({
+                              'orderedDate': orderedDate,
+                              'orderedTime': orderedTime,
+                              'selectedServices': selectedServices,
+                              'totalAmount': totalAmount,
+                              'serviceCenterEmail': (FirebaseAuth.instance.currentUser!.email),
+                            });
+                             // Delete the document from the nested subcollection
+  await firestore
+      .collection('Orders_pending')
+      .doc(orders[index].id)
+      .collection('orders')
+      .doc(FirebaseAuth.instance.currentUser!.email)
+      .delete();
+      await firestore
+      .collection('Orders_placed')
+      .doc(FirebaseAuth.instance.currentUser!.email)
+      .collection('orders')
+      .doc(orders[index].id)
+      .delete();
+
+  // Optionally show a success message
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text('Order marked as completed. Pending Details deleted.'),
+  ));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromARGB(255, 46, 159, 53),
                             foregroundColor: Colors.white,
                           ),
                           child: Text('Work Done'),
-                           ),
+                        ),
                       ],
                     ),
                   ],
