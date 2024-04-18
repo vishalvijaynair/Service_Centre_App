@@ -157,7 +157,7 @@ Future<List<DocumentSnapshot>> _fetchOrdersPlaced() async {
     userEmail: ordersPlaced['userEmail'],
     orderedDate:ordersPlaced['orderedDate'],
     orderedTime:ordersPlaced['orderedTime'],
-    totalAmount:ordersPlaced['totalAmount']
+    totalAmount: (ordersPlaced['totalAmount'] ?? 0).toDouble(),
   ),
             ],
           );

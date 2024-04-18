@@ -314,7 +314,7 @@ class _SignupPageState extends State<SignupPage> {
                           'locValue': {
                             'latitude': _latitude,
                             'longitude': _longitude,
-                          'rating':5,
+                          'rate':3,
                           },
                         });
 

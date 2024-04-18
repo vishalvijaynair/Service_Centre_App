@@ -32,14 +32,15 @@ Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
       title: Text('Order Details'),
-      backgroundColor: Color.fromARGB(255, 207, 173, 210),
+      backgroundColor: Color.fromARGB(255, 251, 204, 255),
     ),
+    backgroundColor: Color.fromARGB(255, 255, 255, 255),
     body: SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 255, 217, 230),
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(17.0),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

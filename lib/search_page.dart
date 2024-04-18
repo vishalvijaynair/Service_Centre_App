@@ -128,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
                         userEmail: userData['userEmail'] ?? '',
                         orderedDate: userData['orderedDate'] ?? '',
                         orderedTime: userData['orderedTime'] ?? '',
-                        totalAmount: userData['totalAmount'] ?? 0,
+                        totalAmount: (userData['totalAmount'] ?? 0).toDouble(),
                       ),
                     );
                   },

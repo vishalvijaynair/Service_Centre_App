@@ -8,7 +8,7 @@ class MyWorks extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Works'),
-        backgroundColor: Color.fromARGB(255, 230, 182, 247),
+        backgroundColor: Color.fromARGB(255, 203, 173, 214),
       ),
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: StreamBuilder<QuerySnapshot>(

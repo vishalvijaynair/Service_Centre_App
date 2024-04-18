@@ -144,7 +144,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Order Details'),
-        backgroundColor: Color.fromARGB(255, 247, 163, 255),
+        backgroundColor: Color.fromARGB(255, 251, 212, 255),
          actions: [
         ],
       ),
@@ -153,7 +153,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         margin: EdgeInsets.all(20.0),
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 209, 174, 255),
+          color: Color.fromARGB(215, 236, 193, 226),
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: SingleChildScrollView(
@@ -203,7 +203,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               ElevatedButton(
                 onPressed: _submitOrder,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 89, 40, 142),
+                  backgroundColor: Color.fromARGB(255, 170, 89, 199),
                   foregroundColor: Colors.white,
                 ),
                 child: Text('Submit'),
