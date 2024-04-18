@@ -303,7 +303,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         );
                       } else {
-                        await FirebaseFirestore.instance.collection('Service_Centres').doc(_emailController.text).set({
+                        await FirebaseFirestore.instance.collection('Requested_Centres').doc(_emailController.text).set({
                           'Service Center Name': _nameController.text,
                           'License Number': _usernameController.text,
                           'Email': _emailController.text,
@@ -314,6 +314,7 @@ class _SignupPageState extends State<SignupPage> {
                           'locValue': {
                             'latitude': _latitude,
                             'longitude': _longitude,
+                          'rating':5,
                           },
                         });
 
@@ -322,7 +323,7 @@ class _SignupPageState extends State<SignupPage> {
                           password: _passwordController.text,
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Registered successfully')),
+                          SnackBar(content: Text('Request send to Admin')),
                         );
                         Navigator.pushReplacement(
                           context,

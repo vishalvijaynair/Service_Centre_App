@@ -144,17 +144,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Order Details'),
-        backgroundColor: Color.fromARGB(255, 169, 170, 255),
+        backgroundColor: Color.fromARGB(255, 247, 163, 255),
          actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
-          ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -162,7 +153,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         margin: EdgeInsets.all(20.0),
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: Colors.lightBlue[100],
+          color: Color.fromARGB(255, 209, 174, 255),
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: SingleChildScrollView(
