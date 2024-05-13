@@ -314,8 +314,8 @@ class _SignupPageState extends State<SignupPage> {
                           'locValue': {
                             'latitude': _latitude,
                             'longitude': _longitude,
-                          'rate':3,
                           },
+                          'rate':3,
                         });
 
                         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
